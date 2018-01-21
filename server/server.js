@@ -1,29 +1,49 @@
-const mongoose = require('mongoose');
+// external imports
+const express = require('express');
+const bodyParser = require('body-parser');
+//internal imports
+const {mongoose} = require('./db/db_config.js');
+const {Todo} = require('./models/todo');
+const {User} = require('./models/user');
+
+var app = express();
+
+app.use(bodyParser.json());
 
 
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/TodoApp');
-
-var Todo = mongoose.model(
-  'Todo',{
-    text: {
-      type: String
-    },
-    completed: {
-      type: Boolean
-    },
-    completedAt : {
-      type: Number
-    }
+app.post('/todos', (req, res) => {
+  console.log("new POST on server..");
+  var todo = new Todo({
+    text: req.body.text
   });
 
-var new_todo = new Todo({
-  text : 'learn new stuff',
-  completed : false
-})
-
-new_todo.save().then((doc) => {
-  console.log("new todo saved successfully: ", doc);
-},(err) => {
-   console.log("something went wrong");
+todo.save().then((doc) => {
+    res.send(doc);
+  },(err) => {
+    res.status(400).send(err);
 });
+
+});
+
+// GET /todos/something
+
+app.listen(3000, () => {
+  console.log("started on port 3000");
+});
+
+
+
+// var new_todo = new Todo({
+//   text : 'learn new stuff',
+//   completed : false
+// });
+// var new_user = new User({
+//   email: 'zakany.balazs@viapangroup.com'
+// })
+//
+
+// new_user.save().then((doc) => {
+//     console.log("new user saved successfully: ", doc);
+//   },(err) => {
+//      console.log("something went wrong: ", err);
+// });
