@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue" charset="utf-8"></script>
+  </head>
+  <body>
+    <div class="" id="app"  v-on:mousemove="move">
+      <h3 v-once>Original text: "{{text}}"</h3>
+      <p>text modification</p>
+      <input type="text" v-on:input="changeText">
+      <p>the better way</p>
+      <input type="text" v-model="text">
+      <p>click event</p>
+      <button type="button" v-on:click="more">+</button>
+      <p>{{count}}</p>
+      <p>better way</p>
+      <button type="button" v-on:click="count++">+</button>
+      <button type="button" v-on:click="count--">-</button>
+      <p>{{count}} is {{counter}}</p>
+      <p>links:</p>
+      <p>{{sayHello()}}</p>
+      <p><a v-bind:href="link">Google</a></p>
+      <p v-html="finished_link"></p>
+      <p>mouse events</p>
+      <p v-on:mousemove.stop="">Dead line</p>
+      <p>Your muse is@: x:{{x}} y: {{y}}</p>
+      <p>keyboard events (logging to console)</p>
+      <input type="text" v-on:keyup.control="alertMe" name="" value="">
+    </div>
+  </body>
+</html>
+<script src="base.js" charset="utf-8"></script>

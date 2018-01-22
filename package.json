@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/zakanybalazs/nodeground#readme",
   "dependencies": {
+    "async-await": "^0.1.40",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "express-vue": "^5.0.0-alpha3",
