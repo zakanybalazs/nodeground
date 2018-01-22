@@ -8,12 +8,14 @@ const {maganTIG} = require('./models/magantig');
 var app = express();
 app.use(bodyParser.json());
 
+
+
 app.post('/tig_magan', (req, res) => {
   console.log("new POST on server..");
   var magan = new maganTIG({
     text: req.body.text
   });
-)};
+});
 
 app.listen(3000, () => {
   console.log("started on port 3000");
