@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-// const pdfMake = require('pdfmake');
+const request = require('ajax-request');
 const pdfMake = require("../../node_modules/pdfmake/build/pdfmake.min.js");
 const pdfPrinter = require('../../node_modules/pdfmake/src/printer.js');
 const fs = require('fs');
@@ -21,17 +21,12 @@ var rendszam = text.Prendszam;
 var idoszak_eleje = text.Pkezdet;
 var idoszak_vege = text.Pvege;
 var ceg = text.Pceg;
+var nmbr = 123456;
+/* TODO : ki kell találni, hogyan lehetne ezt betűvé alakítani */
+/* TODO : ki kell találni, hogyan az sql adatbázisból adatokat kérni */
+/* TODO : ki kell találni, hogyan lehetne választ küldeni a requestre */
 
 
-function tableContent(rendszam,idoszak_eleje,idoszak_vege,ceg) {
-  var tableBody = [];
-  var header = ['valami','valami2','valami kicsit hosszabb','valami3'];
-  tableBody.push(header);
-  for (var i = 0; i < 4; i++) {
-    tableBody.push([{text: rendszam, style:'tableRow'},{text: idoszak_eleje, style:'tableRow'},{text: idoszak_vege, style:'tableRow'},{text: ceg, style:'tableRow'}]);
-  }
-  return tableBody;
-}
 
 var pdf = {
   content: [
@@ -40,7 +35,7 @@ var pdf = {
       style: 'header'
     },
     {
-      text: rendszam
+      text: 'szamszoveg'
     },
     {
       table: {
