@@ -12,8 +12,9 @@ app.use(bodyParser.json());
 
 app.post('/tig_magan', (req, res) => {
   console.log("new POST on server..");
-  var magan = new maganTIG({
-    text: req.body.text
+  console.log(req.body.Prendszam);
+  maganTIG({
+    text: req.body
   });
 });
 
