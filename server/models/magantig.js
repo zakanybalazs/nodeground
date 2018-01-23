@@ -25,7 +25,7 @@ function kikuldott(t) {
   esc.push([{text: 'A kiküldött ', alignment: 'center',colSpan:2, lineHeight : 2, fontSize: 16},{}]);
   esc.push([{text: 'Neve: '+ t.tulaj , fontSize: 9},{text: 'Lakcíme: ' + t.tulaj_lakcim, fontSize: 9}]);
   esc.push([{text: 'Adószáma: ' + t.tulaj_adoszam, fontSize: 9},{text: 'Szül.idő, hely: ' + t.tulaj_szul_ido + ", " +t.tulaj_szul_hely, fontSize: 9}]);
-  esc.push([{text: 'Beosztása: '+ t.tulaj_baosztas , fontSize: 9},{text: 'Szolg. hely: ' + t.tulaj_szolg_hely, fontSize: 9}]);
+  esc.push([{text: 'Beosztása: '+ t.tulaj_beosztas , fontSize: 9},{text: 'Szolg. hely: ' + t.tulaj_szolg_hely, fontSize: 9}]);
   esc.push([{text: 'F.Rendszám: ' + t.auto_rendszam, fontSize: 9},{text: 'Márka, típus: ' + t.auto_marka + ", " +t.auto_tipus, fontSize: 9}]);
   esc.push([{text: 'Üzemanyag ár: '+ t.uzemanyag_ar + " Ft/l", fontSize: 9},{text: 'Norma: ' + t.auto_fogyasztas + "l/100Km", fontSize: 9}]);
   esc.push([{text: 'Löktérfogat: '+ t.auto_terfogat + " cm3", fontSize: 9},{text: 'Üzemanyag: ' + t.auto_uzemanyag, fontSize: 9}]);
@@ -36,7 +36,7 @@ function kikuldott(t) {
 function utak(t) {
   var esc = [];
   esc.push([{text: 'Kiküldetési utasítás', alignment: 'center',colSpan:7,  fontSize: 16},{},{},{},{},{},{}]);
-  esc.push([{text: 'VID'},{text: 'Dátum'},{text: 'Indulási hely'},{text: 'Érkezési hely'},{text: 'Záró kilométeróra állás'},{text: 'Célja'},{text: 'Megtett km'}]);
+  esc.push([{text: 'VID'},{text: 'Dátum'},{text: 'Indulási hely'},{text: 'Érkezési hely'},{text: 'Záró km'},{text: 'Utazás célja / parter'},{text: 'Megtett km'}]);
 for (var i = 0; i < t.utak.length; i++) {
   esc.push([
     {text: t.utak[i].ut_id, fontSize: 9},
@@ -48,12 +48,23 @@ for (var i = 0; i < t.utak.length; i++) {
     {text: t.utak[i].ut_km, fontSize: 9},
   ]);
 }
-
     return esc;
 }
 
-var ossz_km = `Összesen megtett km: ${t.ossz_km}`;
+var osszegzes = (t) => {
+  var esc = [];
+  esc.push([{
+    text: t.uzemanyag_ar + " Ft / liter x " + t.auto_terfogat + " liter / 100 km x " + t.ossz_km + " km = "}
+    ,{
+    text: t.ossz_koltseg + " Ft", alignment: "right"
+  }]);
+  esc.push([{text: t.amortizacio + ".- Ft / km x " + t.ossz_km + " km = "}, {text: t.ossz_arotizacio + " Ft", alignment: "right"}]);
+  return esc;
+}
 
+var ossz_km = `Összesen megtett km: ${t.ossz_km}`;
+var osszesen_megtett = `Összesen:     ${t.global_osszeg} Ft`;
+var alairas = `${t.tulaj} aláírása`;
 var pdf = {
   content: [
     {
@@ -100,9 +111,89 @@ var pdf = {
       alignment: 'right'
     },
     {
-      text: "költségelszámolás",
+      text: "Költségelszámolás",
       lineHeight: 2
-    }
+    },
+    {
+      table:
+      {
+        widths: ['*', 50],
+        body: osszegzes(text)
+      }
+    },
+    {
+      text: osszesen_megtett, alignment: "right", lineHeight: 3
+    },
+    {
+			alignment: 'justify',
+			columns: [
+				{
+          width: 305,
+					 table: {
+             widths: [200],
+             body: [
+               [
+                 {
+                   table: {
+                     widths: [200],
+                     body: [
+                       [{text: 'költségelszámolás végösszegét', alignment: "center", fontSize: 12}],
+                       [{text: 'felvettem:', alignment: "center", lineHeight: 2}],
+                       [{text: 'dátum:', alignment: "center", lineHeight: 2}]
+                     ]
+                   },
+                   layout: 'noBorders'
+                 }
+               ],
+               [
+                 {
+                   table: {
+                     widths: [200],
+                     body: [
+                        [{text: alairas, alignment: "center"}]
+                     ]
+                   },
+                   layout: "noBorders"
+                 }
+               ]
+             ]
+           }
+				},
+        {
+          alignment: "right",
+          table: {
+            widths: [200],
+            body: [
+              [
+                {
+                  alignment: "right",
+                  table: {
+                    widths: [200],
+                    body: [
+                      [{text: 'Kiküldetést elrendelő bélyegzője', alignment: "center", fontSize: 12}],
+                      [{text: 'és aláírása:', alignment: "center", lineHeight: 4.25}]
+                    ]
+                  },
+                  layout: 'noBorders'
+                }
+              ],
+              [
+                {
+                  alignment: "right",
+                  table: {
+                    widths: [200],
+                    body: [
+                       [{text: "aláírás, Ph", alignment: "center"}]
+                    ]
+                  },
+                  layout: "noBorders"
+                }
+              ]
+            ]
+          }
+        }
+			]
+		}
   ],
   styles: {
     header: {
