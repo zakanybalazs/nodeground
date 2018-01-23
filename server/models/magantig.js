@@ -24,6 +24,22 @@ var ceg = text.Pceg;
 var nmbr = 123456;
 /* TODO : ki kell találni, hogyan lehetne ezt betűvé alakítani */
 /* TODO : ki kell találni, hogyan az sql adatbázisból adatokat kérni */
+
+var server = mysql.createConnection({
+  host     : "localhost",
+  user     : 'promothe_sqlu',
+  password : 'B4l4Zs',
+  database : 'promothe_sql'
+})
+server.connect();
+
+
+/*
+connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
+  if (error) throw error;
+  console.log('The solution is: ', results[0].solution);
+});
+*/
 /* TODO : ki kell találni, hogyan lehetne választ küldeni a requestre */
 
 
@@ -61,5 +77,5 @@ pdfDoc.pipe(fs.createWriteStream('teszt.pdf'));
 pdfDoc.end();
 
 }
-
+server.end();
 module.exports = {maganTIG}
